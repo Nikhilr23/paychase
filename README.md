@@ -2,21 +2,25 @@
 
 **Get paid without the awkward chase.**
 
+Live MVP: https://nikhilr23.github.io/paychase/
+
 PayChase is a lightweight browser-based invoice follow-up tracker for freelancers and small service businesses. It helps users see what is outstanding, identify overdue invoices, and generate professional payment reminder messages without needing a full accounting platform.
 
-## MVP features
+## Current MVP
 
 - Add and track invoices
-- Outstanding, overdue, and recovered totals
+- Edit and delete invoices
+- Outstanding, overdue, and paid-tracked totals
 - Automatic overdue-day calculation
 - Search and status filters
 - Friendly, standard, and firm reminder generator
 - Copy reminders to clipboard
 - Mark invoices as paid
-- Delete invoices
+- Export invoice data as a JSON backup
 - Browser-only persistence with `localStorage`
-- Responsive interface
-- No account, backend, or API keys required
+- Responsive interface and keyboard focus states
+- Installable web-app manifest
+- No account, backend, external API, or API keys required
 
 ## Follow-up cadence
 
@@ -24,18 +28,17 @@ The interface presents a simple example playbook: due date, +3 days, +7 days, +1
 
 ## Technology
 
-- HTML
-- CSS
-- Vanilla JavaScript
-- Browser `localStorage`
+HTML, CSS, vanilla JavaScript, browser `localStorage`, GitHub Actions, and GitHub Pages.
 
 ## Privacy / architecture
 
-The current MVP stores invoice data locally in the user's browser. There is no server-side database or authentication layer in this version. Users should avoid entering sensitive information they do not want stored in their browser profile.
+The current MVP stores invoice data locally in the user's browser. There is no server-side database or authentication layer. Users should avoid entering sensitive information they do not want stored in their browser profile.
 
-## Future validation-driven roadmap
+## Acquisition / handoff notes
 
-Potential upgrades after user validation include authentication, cloud sync, scheduled email delivery, saved reminder history, configurable cadences, Stripe subscriptions, accounting integrations, and team accounts.
+The project is intentionally small and transferable: static source code, no backend infrastructure, no production secrets, and no external service dependencies in the current version. A buyer can continue the existing browser-only product or extend it with authentication, cloud sync, scheduled email delivery, reminder history, configurable cadences, billing, accounting integrations, and team accounts.
+
+No revenue, customer, traffic, or profitability claims are made in this repository.
 
 ## Run locally
 
@@ -43,4 +46,4 @@ Open `index.html` in a modern browser, or serve the directory with any static we
 
 ## Status
 
-Early-stage MVP built for product validation.
+Functional early-stage MVP built for product validation and potential acquisition.
