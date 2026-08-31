@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="PayChase helps freelancers and small service businesses track overdue invoices and generate professional follow-up reminders." />
+  <meta name="theme-color" content="#172033" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <title>PayChase — Get paid without the awkward chase</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="enhancements.css" />
 </head>
 <body>
   <div class="app-shell">
@@ -35,37 +39,19 @@
       </section>
 
       <section class="stats-grid" aria-label="Invoice summary">
-        <article class="stat-card">
-          <span>Outstanding</span>
-          <strong id="outstandingTotal">$0</strong>
-          <small>Open invoice balance</small>
-        </article>
-        <article class="stat-card">
-          <span>Overdue</span>
-          <strong id="overdueTotal">$0</strong>
-          <small>Past due balance</small>
-        </article>
-        <article class="stat-card">
-          <span>Recovered</span>
-          <strong id="recoveredTotal">$0</strong>
-          <small>Marked paid in PayChase</small>
-        </article>
+        <article class="stat-card"><span>Outstanding</span><strong id="outstandingTotal">$0</strong><small>Open invoice balance</small></article>
+        <article class="stat-card"><span>Overdue</span><strong id="overdueTotal">$0</strong><small>Past due balance</small></article>
+        <article class="stat-card"><span>Paid tracked</span><strong id="recoveredTotal">$0</strong><small>Invoices marked paid in PayChase</small></article>
       </section>
 
       <section class="workspace">
         <div class="panel panel-main">
           <div class="panel-header">
-            <div>
-              <span class="eyebrow">Invoice tracker</span>
-              <h2>Your invoices</h2>
-            </div>
+            <div><span class="eyebrow">Invoice tracker</span><h2>Your invoices</h2></div>
             <div class="toolbar">
               <input id="searchInput" type="search" placeholder="Search client or invoice…" aria-label="Search invoices" />
               <select id="statusFilter" aria-label="Filter invoices by status">
-                <option value="all">All</option>
-                <option value="open">Open</option>
-                <option value="overdue">Overdue</option>
-                <option value="paid">Paid</option>
+                <option value="all">All</option><option value="open">Open</option><option value="overdue">Overdue</option><option value="paid">Paid</option>
               </select>
             </div>
           </div>
@@ -73,8 +59,7 @@
         </div>
 
         <aside class="panel panel-side">
-          <span class="eyebrow">Follow-up playbook</span>
-          <h2>Simple cadence</h2>
+          <span class="eyebrow">Follow-up playbook</span><h2>Simple cadence</h2>
           <div class="timeline">
             <div><span>Due date</span><strong>Friendly check-in</strong></div>
             <div><span>+3 days</span><strong>Friendly reminder</strong></div>
@@ -82,7 +67,8 @@
             <div><span>+14 days</span><strong>Firm reminder</strong></div>
             <div><span>+30 days</span><strong>Final follow-up</strong></div>
           </div>
-          <div class="privacy-note">All data stays in your browser in this MVP. No account or server is required.</div>
+          <div class="privacy-note">All invoice data stays in this browser in the current MVP. No account, server, or external API is required.</div>
+          <div class="data-actions"><button class="btn btn-secondary" id="exportData">Export backup</button></div>
         </aside>
       </section>
     </main>
@@ -91,10 +77,7 @@
   <div class="modal-backdrop hidden" id="invoiceModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <div class="modal-header">
-        <div>
-          <span class="eyebrow">New invoice</span>
-          <h2 id="modalTitle">Track an invoice</h2>
-        </div>
+        <div><span class="eyebrow" id="modalEyebrow">New invoice</span><h2 id="modalTitle">Track an invoice</h2></div>
         <button class="icon-btn" id="closeInvoiceModal" aria-label="Close">×</button>
       </div>
       <form id="invoiceForm" class="form-grid">
@@ -103,33 +86,17 @@
         <label>Amount<input name="amount" type="number" min="0.01" step="0.01" required placeholder="850.00" /></label>
         <label>Due date<input name="dueDate" type="date" required /></label>
         <label class="full">Client email<input name="email" type="email" maxlength="120" placeholder="client@example.com" /></label>
-        <div class="form-actions full">
-          <button type="button" class="btn btn-secondary" id="cancelInvoice">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save invoice</button>
-        </div>
+        <div class="form-actions full"><button type="button" class="btn btn-secondary" id="cancelInvoice">Cancel</button><button type="submit" class="btn btn-primary" id="saveInvoiceButton">Save invoice</button></div>
       </form>
     </div>
   </div>
 
   <div class="modal-backdrop hidden" id="reminderModal" role="dialog" aria-modal="true" aria-labelledby="reminderTitle">
     <div class="modal modal-wide">
-      <div class="modal-header">
-        <div>
-          <span class="eyebrow">Reminder generator</span>
-          <h2 id="reminderTitle">Generate a payment follow-up</h2>
-        </div>
-        <button class="icon-btn" id="closeReminderModal" aria-label="Close">×</button>
-      </div>
-      <div class="reminder-controls">
-        <button class="tone-btn active" data-tone="friendly">Friendly</button>
-        <button class="tone-btn" data-tone="standard">Standard</button>
-        <button class="tone-btn" data-tone="firm">Firm</button>
-      </div>
+      <div class="modal-header"><div><span class="eyebrow">Reminder generator</span><h2 id="reminderTitle">Generate a payment follow-up</h2></div><button class="icon-btn" id="closeReminderModal" aria-label="Close">×</button></div>
+      <div class="reminder-controls"><button class="tone-btn active" data-tone="friendly">Friendly</button><button class="tone-btn" data-tone="standard">Standard</button><button class="tone-btn" data-tone="firm">Firm</button></div>
       <textarea id="reminderText" rows="10" aria-label="Generated reminder"></textarea>
-      <div class="form-actions">
-        <button class="btn btn-secondary" id="closeReminder">Close</button>
-        <button class="btn btn-primary" id="copyReminder">Copy message</button>
-      </div>
+      <div class="form-actions"><button class="btn btn-secondary" id="closeReminder">Close</button><button class="btn btn-primary" id="copyReminder">Copy message</button></div>
     </div>
   </div>
 
